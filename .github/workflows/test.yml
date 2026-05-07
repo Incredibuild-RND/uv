@@ -56,7 +56,8 @@ jobs:
       - name: "Install secret service"
         run: |
           echo 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null
-          sudo apt install -y --update gnome-keyring
+          sudo apt-get update
+          sudo apt-get install -y gnome-keyring
 
       - name: "Start gnome-keyring"
         # run gnome-keyring with 'foobar' as password for the login keyring
@@ -64,9 +65,27 @@ jobs:
         # the login password doesn't matter, but the keyring must be unlocked for the tests to work
         run: gnome-keyring-daemon --components=secrets --daemonize --unlock <<< 'foobar'
 
-      - name: "Create btrfs filesystem"
+      - name: "Detect loop-mount support"
+        id: loop_support
         run: |
-          sudo apt install -y --update btrfs-progs
+          # Some self-hosted runners (e.g. Incredibuild's container-based
+          # Hosted Build Runner) don't expose /dev/loop* and can't perform
+          # `mount -o loop`. Detect once and skip the special filesystem
+          # setup gracefully — the cargo-test step will then run without
+          # the CoW/NoCoW/AltFS/LowLinks env vars and skip the
+          # corresponding test scenarios rather than failing hard.
+          if losetup -f >/dev/null 2>&1 && [ -e /dev/loop-control ]; then
+            echo "supported=true" >> "$GITHUB_OUTPUT"
+            echo "Loop-mount support: available"
+          else
+            echo "supported=false" >> "$GITHUB_OUTPUT"
+            echo "Loop-mount support: unavailable; CoW/NoCoW/Minix filesystem tests will be skipped"
+          fi
+
+      - name: "Create btrfs filesystem"
+        if: steps.loop_support.outputs.supported == 'true'
+        run: |
+          sudo apt-get install -y btrfs-progs
           truncate -s 1G /tmp/btrfs.img
           mkfs.btrfs /tmp/btrfs.img
           sudo mkdir /btrfs
@@ -74,12 +93,14 @@ jobs:
           sudo chown "$(id -u):$(id -g)" /btrfs
 
       - name: "Create tmpfs filesystem"
+        if: steps.loop_support.outputs.supported == 'true'
         run: |
           sudo mkdir /tmpfs
           sudo mount -t tmpfs -o size=256m tmpfs /tmpfs
           sudo chown "$(id -u):$(id -g)" /tmpfs
 
       - name: "Create minix filesystem (low hardlink limit)"
+        if: steps.loop_support.outputs.supported == 'true'
         run: |
           truncate -s 16M /tmp/minix.img
           mkfs.minix /tmp/minix.img
@@ -97,10 +118,10 @@ jobs:
           # Retry more than default to reduce flakes in CI
           UV_HTTP_RETRIES: 5
           RUST_BACKTRACE: 1
-          UV_INTERNAL__TEST_COW_FS: /btrfs
-          UV_INTERNAL__TEST_NOCOW_FS: /tmpfs
-          UV_INTERNAL__TEST_ALT_FS: /tmpfs
-          UV_INTERNAL__TEST_LOWLINKS_FS: /minix
+          UV_INTERNAL__TEST_COW_FS: ${{ steps.loop_support.outputs.supported == 'true' && '/btrfs' || '' }}
+          UV_INTERNAL__TEST_NOCOW_FS: ${{ steps.loop_support.outputs.supported == 'true' && '/tmpfs' || '' }}
+          UV_INTERNAL__TEST_ALT_FS: ${{ steps.loop_support.outputs.supported == 'true' && '/tmpfs' || '' }}
+          UV_INTERNAL__TEST_LOWLINKS_FS: ${{ steps.loop_support.outputs.supported == 'true' && '/minix' || '' }}
           # Write pending snapshots to a separate directory for artifact upload
           INSTA_UPDATE: new
           INSTA_PENDING_DIR: ${{ github.workspace }}/pending-snapshots
