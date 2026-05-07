@@ -232,6 +232,12 @@ jobs:
 
   docker-publish-extra:
     name: ${{ needs.docker-plan.outputs.action }} ${{ matrix.image-mapping }}
+    # Variant images do `COPY --from=ghcr.io/.../uv:${UV_BASE_TAG}` to
+    # pull binaries out of the just-built base image. On PR validation
+    # the base isn't pushed, so the variant build can't resolve its
+    # source layer. Skip the matrix entirely unless we're actually
+    # pushing the base.
+    if: ${{ needs.docker-plan.outputs.push == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     environment:
