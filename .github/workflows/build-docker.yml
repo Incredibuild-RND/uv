@@ -209,7 +209,13 @@ jobs:
         uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0 # v6.17.0
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          # Multi-arch build under QEMU binfmt fails on this fork because
+          # the runner image lacks an aarch64 dynamic loader for emulated
+          # native steps (`uv sync` runs natively under qemu and looks
+          # for /lib/ld-linux-aarch64.so.1). Restrict to amd64 for now;
+          # restore linux/arm64 when the runner supports proper QEMU
+          # registration via tonistiigi/binfmt or equivalent.
+          platforms: ${{ needs.docker-plan.outputs.push == 'true' && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
           push: ${{ needs.docker-plan.outputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -336,7 +342,10 @@ jobs:
         uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0 # v6.17.0
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          # See note in docker-publish: arm64 needs proper QEMU binfmt
+          # registration that the current runner doesn't provide. Skip
+          # arm64 on PR-only validation runs.
+          platforms: ${{ needs.docker-plan.outputs.push == 'true' && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
           push: ${{ needs.docker-plan.outputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

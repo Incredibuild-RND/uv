@@ -269,6 +269,15 @@ jobs:
     name: "msrv"
     runs-on: incredibuild-runner
     timeout-minutes: 10
+    env:
+      # Pin per-job CARGO_HOME and CARGO_TARGET_DIR. Incredibuild's
+      # shared cargo registry cache occasionally produces corrupted
+      # .crate sources (NUL-byte garbage in `indexmap` etc.) when
+      # multiple Linux jobs write the same crate concurrently.
+      # Job-local dirs cost a fresh `cargo fetch` but eliminate the
+      # corruption race for this MSRV smoke build.
+      CARGO_HOME: ${{ github.workspace }}/.cargo
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:

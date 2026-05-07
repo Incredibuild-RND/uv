@@ -30,8 +30,8 @@ EOF
 fi
 
 missing=()
-for tool in wget curl ca-certificates; do
-    if ! command -v "$tool" >/dev/null 2>&1 && [ "$tool" != ca-certificates ]; then
+for tool in wget curl unzip; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
         missing+=("$tool")
     fi
 done
