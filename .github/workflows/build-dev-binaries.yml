@@ -287,10 +287,15 @@ jobs:
       - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
         with:
           save-if: ${{ inputs.save-rust-cache == 'true' }}
-      - run: cargo +${MSRV} build --profile no-debug
+      - run: cargo +${MSRV} build --profile no-debug --bin uv
         env:
           MSRV: ${{ steps.msrv.outputs.value }}
-      - run: ./target/no-debug/uv --version
+      # Use `cargo run` instead of `./target/...` so the path resolves
+      # via cargo metadata regardless of CARGO_TARGET_DIR overrides
+      # (Incredibuild Hosted Build Runner sets a shared target dir).
+      - run: cargo +${MSRV} run --profile no-debug --bin uv -- --version
+        env:
+          MSRV: ${{ steps.msrv.outputs.value }}
 
   build-binary-android-aarch64:
     name: "android aarch64"
