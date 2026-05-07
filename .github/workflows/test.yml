@@ -57,13 +57,29 @@ jobs:
         run: |
           echo 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null
           sudo apt-get update
-          sudo apt-get install -y gnome-keyring
+          # dbus-x11 brings `dbus-launch` so we can start a session bus on
+          # runners that don't have one (e.g. Incredibuild's container-based
+          # Hosted Build Runner). Without a session bus, gnome-keyring-daemon
+          # exits cleanly but secret-service tests fail at runtime with
+          # "no secret service provider or dbus session found".
+          sudo apt-get install -y gnome-keyring dbus-x11
 
-      - name: "Start gnome-keyring"
-        # run gnome-keyring with 'foobar' as password for the login keyring
-        # this will create a new login keyring and unlock it
-        # the login password doesn't matter, but the keyring must be unlocked for the tests to work
-        run: gnome-keyring-daemon --components=secrets --daemonize --unlock <<< 'foobar'
+      - name: "Start dbus session bus + gnome-keyring"
+        # Capture the dbus session address into $GITHUB_ENV so that
+        # subsequent steps (notably `cargo nextest run`) inherit it and
+        # secret-service-backed tests can reach the keyring.
+        run: |
+          eval "$(dbus-launch --sh-syntax)"
+          echo "DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS" >> "$GITHUB_ENV"
+          echo "DBUS_SESSION_BUS_PID=$DBUS_SESSION_BUS_PID" >> "$GITHUB_ENV"
+          # gnome-keyring-daemon prints its own DBUS_* exports; accept them
+          # via /dev/stdin so they don't disturb the env above.
+          gnome-keyring-daemon --components=secrets --daemonize --unlock <<< 'foobar' \
+            > /tmp/gnome-keyring.env || true
+          # Best-effort: also expose any extra env exports the daemon emitted
+          if [ -s /tmp/gnome-keyring.env ]; then
+            sed -nE 's/^([A-Z_]+)=(.+)$/\1=\2/p' /tmp/gnome-keyring.env >> "$GITHUB_ENV" || true
+          fi
 
       - name: "Detect loop-mount support"
         id: loop_support

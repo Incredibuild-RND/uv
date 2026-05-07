@@ -128,7 +128,7 @@ jobs:
     name: ${{ needs.docker-plan.outputs.action }} uv
     needs:
       - docker-plan
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
       contents: read
@@ -225,7 +225,7 @@ jobs:
 
   docker-publish-extra:
     name: ${{ needs.docker-plan.outputs.action }} ${{ matrix.image-mapping }}
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     environment:
       name: ${{ needs.docker-plan.outputs.push-version == 'true' && 'release' || (needs.docker-plan.outputs.push == 'true' && 'release-test' || '') }}
@@ -396,7 +396,7 @@ jobs:
   # Annotate the base image
   docker-annotate-base:
     name: annotate uv
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     timeout-minutes: 2
     permissions:
       contents: read

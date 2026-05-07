@@ -331,7 +331,7 @@ jobs:
 
   linux:
     name: ${{ matrix.target }}
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
@@ -447,7 +447,7 @@ jobs:
 
   linux-arm:
     name: ${{ matrix.platform.target }}
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
       matrix:
@@ -578,7 +578,7 @@ jobs:
   linux-s390x:
     name: ${{ matrix.platform.target }}
     timeout-minutes: 30
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         platform:
@@ -699,7 +699,7 @@ jobs:
   # Like `linux-arm`, but install the `gcc-powerpc64-linux-gnu` package.
   linux-powerpc:
     name: ${{ matrix.platform.target }}
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         platform:
@@ -810,7 +810,7 @@ jobs:
   linux-riscv64:
     name: ${{ matrix.platform.target }}
     timeout-minutes: 30
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         platform:
@@ -927,7 +927,7 @@ jobs:
 
   musllinux:
     name: ${{ matrix.target }}
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         target:
@@ -1030,7 +1030,7 @@ jobs:
 
   musllinux-cross:
     name: ${{ matrix.platform.target }}
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     env:
       CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_MUSL_RUSTFLAGS: "-C target-feature=+crt-static"
     strategy:
