@@ -61,7 +61,8 @@ jobs:
           # renovate: datasource=github-releases depName=koalaman/shellcheck
           SHELLCHECK_VERSION="v0.11.0"
           curl -sSL "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" | tar -xJf -
-          sudo mv "shellcheck-${SHELLCHECK_VERSION}/shellcheck" /usr/local/bin/
+          if [ "$(id -u)" = "0" ]; then SUDO=""; else SUDO="sudo"; fi
+          $SUDO mv "shellcheck-${SHELLCHECK_VERSION}/shellcheck" /usr/local/bin/
       - name: "Run shellcheck"
         run: find . -name '*.sh' -type f | xargs shellcheck --shell bash --severity style
 
@@ -162,4 +163,10 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+      - name: "Ensure wget is available (crate-ci/typos requires it)"
+        run: |
+          if ! command -v wget >/dev/null 2>&1; then
+            if [ "$(id -u)" = "0" ]; then SUDO=""; else SUDO="sudo"; fi
+            $SUDO apt-get update && $SUDO apt-get install -y wget
+          fi
       - uses: crate-ci/typos@cf5f1c29a8ac336af8568821ec41919923b05a83 # v1.45.1
