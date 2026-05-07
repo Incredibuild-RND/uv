@@ -33,6 +33,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: "Bootstrap baseline tools"
+        run: ./scripts/ensure-ci-tools.sh
+
       - name: "Install mold"
         run: ./scripts/install-mold.sh
 
