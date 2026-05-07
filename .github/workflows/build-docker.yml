@@ -163,7 +163,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: depot/setup-action@15c09a5f77a0840ad4bce955686522a257853461 # v1.7.1
+      - name: "Set up QEMU (multi-arch buildx)"
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+      - name: "Set up Docker Buildx"
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
 
       - name: Check tag consistency
         if: ${{ needs.docker-plan.outputs.push == 'true' }}
@@ -203,9 +206,8 @@ jobs:
 
       - name: Build and push by digest
         id: build
-        uses: depot/build-push-action@5f3b3c2e5a00f0093de47f657aeaefcedff27d18 # v1.17.0
+        uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0 # v6.17.0
         with:
-          project: 7hd4vdzmw5 # astral-sh/uv
           context: .
           platforms: linux/amd64,linux/arm64
           push: ${{ needs.docker-plan.outputs.push }}
@@ -213,7 +215,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           provenance: mode=max
           sbom: true
-          # TODO(zanieb): Annotations are not supported by Depot yet and are ignored
           annotations: ${{ steps.meta.outputs.annotations }}
 
       - name: Generate artifact attestation for base image
@@ -261,7 +262,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: depot/setup-action@15c09a5f77a0840ad4bce955686522a257853461 # v1.7.1
+      - name: "Set up QEMU (multi-arch buildx)"
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+      - name: "Set up Docker Buildx"
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
 
       - name: Generate Dynamic Dockerfile Tags
         shell: bash
@@ -329,17 +333,15 @@ jobs:
 
       - name: Build and push
         id: build-and-push
-        uses: depot/build-push-action@5f3b3c2e5a00f0093de47f657aeaefcedff27d18 # v1.17.0
+        uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0 # v6.17.0
         with:
           context: .
-          project: 7hd4vdzmw5 # astral-sh/uv
           platforms: linux/amd64,linux/arm64
           push: ${{ needs.docker-plan.outputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           provenance: mode=max
           sbom: true
-          # TODO(zanieb): Annotations are not supported by Depot yet and are ignored
           annotations: ${{ steps.meta.outputs.annotations }}
 
       - name: Generate artifact attestation
