@@ -294,7 +294,7 @@ jobs:
 
   build-binary-android-aarch64:
     name: "android aarch64"
-    timeout-minutes: 10
+    timeout-minutes: 15
     runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -303,6 +303,17 @@ jobs:
 
       - name: "Bootstrap baseline tools"
         run: ./scripts/ensure-ci-tools.sh
+
+      - name: "Install Android NDK"
+        # Lean self-hosted runners (e.g. Incredibuild Hosted Build Runner)
+        # don't ship the Android SDK/NDK that ubuntu-latest preinstalls.
+        # `nttld/setup-ndk` downloads it on-demand and exports
+        # ANDROID_NDK_ROOT so the next step's `${ANDROID_NDK_ROOT}/...`
+        # paths resolve correctly. Pinned by SHA for supply-chain safety.
+        uses: nttld/setup-ndk@afb4c9964b521afb97c864b7d40b11e6911bd410 # v1.5.0
+        with:
+          ndk-version: r26d
+          add-to-path: false
 
       - name: "Setup Android NDK"
         run: |
