@@ -377,7 +377,10 @@ jobs:
   build-binary-freebsd:
     name: "freebsd"
     timeout-minutes: 10
-    runs-on: incredibuild-runner
+    # Runs FreeBSD tests inside a Firecracker microVM; requires nested
+    # virtualization + privileged Docker which Incredibuild's
+    # containerized runner can't provide. Keep on GitHub-hosted Linux.
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
