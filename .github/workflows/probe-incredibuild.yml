@@ -6,6 +6,12 @@ name: probe-incredibuild
 
 on:
   workflow_dispatch:
+  # Also trigger on changes to this file so we can iterate without
+  # needing the workflow to live on the default branch (GitHub's
+  # workflow_dispatch only registers workflows from default branch).
+  push:
+    paths:
+      - .github/workflows/probe-incredibuild.yml
 
 permissions: {}
 
