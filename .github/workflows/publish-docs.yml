@@ -23,7 +23,7 @@ jobs:
   mkdocs:
     environment:
       name: release
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     env:
       VERSION: ${{ (inputs.plan != '' && fromJson(inputs.plan).announcement_tag) || inputs.ref }}
     steps:

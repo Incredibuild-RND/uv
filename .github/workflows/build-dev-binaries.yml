@@ -18,7 +18,7 @@ jobs:
   build-binary-linux-libc:
     name: "linux libc"
     timeout-minutes: 10
-    runs-on: github-ubuntu-24.04-x86_64-8
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -46,7 +46,7 @@ jobs:
   build-binary-linux-aarch64:
     name: "linux aarch64"
     timeout-minutes: 10
-    runs-on: github-ubuntu-24.04-aarch64-4
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -74,7 +74,7 @@ jobs:
   build-binary-linux-armv7-gnueabihf:
     name: "linux armv7 gnueabihf"
     timeout-minutes: 15
-    runs-on: github-ubuntu-24.04-x86_64-8
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -110,7 +110,7 @@ jobs:
   build-binary-linux-musl:
     name: "linux musl"
     timeout-minutes: 10
-    runs-on: github-ubuntu-24.04-x86_64-8
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -260,7 +260,7 @@ jobs:
 
   build-binary-msrv:
     name: "msrv"
-    runs-on: github-ubuntu-24.04-x86_64-8
+    runs-on: incredibuild-runner
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -288,7 +288,7 @@ jobs:
   build-binary-android-aarch64:
     name: "android aarch64"
     timeout-minutes: 10
-    runs-on: github-ubuntu-24.04-x86_64-8
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -338,7 +338,7 @@ jobs:
   build-binary-freebsd:
     name: "freebsd"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:

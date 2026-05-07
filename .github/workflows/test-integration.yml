@@ -19,7 +19,7 @@ jobs:
   integration-test-nushell:
     name: "nushell"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -66,7 +66,7 @@ jobs:
   integration-test-conda:
     name: "conda on linux"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -137,7 +137,7 @@ jobs:
   integration-test-deadsnakes-39-linux:
     name: "deadsnakes python3.9 on ubuntu"
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - name: "Install python3.9"
         run: |
@@ -184,7 +184,7 @@ jobs:
   integration-test-linux-armv7-on-aarch64:
     name: "armv7 on aarch64 linux"
     timeout-minutes: 20
-    runs-on: github-ubuntu-24.04-aarch64-4
+    runs-on: incredibuild-runner
     env:
       UV_PYTHON_INSTALL_DIR: ${{ github.workspace }}/.python
 
@@ -399,7 +399,7 @@ jobs:
   integration-test-pypy-linux:
     name: "pypy on linux"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -464,7 +464,7 @@ jobs:
   integration-test-python-install-wine:
     name: "python install under wine"
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     env:
       WINEARCH: win64
       WINEDEBUG: -all
@@ -557,7 +557,7 @@ jobs:
   integration-test-graalpy-linux:
     name: "graalpy on linux"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -681,7 +681,7 @@ jobs:
   integration-test-pyodide-linux:
     name: "pyodide on linux"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -770,7 +770,7 @@ jobs:
   integration-test-termux:
     name: "termux on android"
     timeout-minutes: 15
-    runs-on: ubuntu-24.04
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -795,7 +795,7 @@ jobs:
   integration-test-github-actions:
     name: "github actions"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
@@ -852,7 +852,7 @@ jobs:
   integration-test-github-actions-freethreaded:
     name: "free-threaded on github actions"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
@@ -942,7 +942,7 @@ jobs:
   integration-test-registries:
     name: "registries"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     if: ${{ github.event.pull_request.head.repo.fork != true }}
     environment:
       name: uv-test-registries
@@ -1052,7 +1052,7 @@ jobs:
   integration-uv-build-backend:
     name: "uv_build"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -1101,7 +1101,7 @@ jobs:
   cache-test-ubuntu:
     name: "cache on linux"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:

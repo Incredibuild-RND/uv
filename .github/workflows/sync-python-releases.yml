@@ -12,7 +12,7 @@ permissions: {}
 jobs:
   sync:
     if: github.repository == 'astral-sh/uv'
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     permissions:
       contents: write
       pull-requests: write

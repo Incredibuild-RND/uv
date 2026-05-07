@@ -13,7 +13,7 @@ jobs:
   # Verify windows crate version matches between workspaces
   windows-version-check:
     timeout-minutes: 5
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     name: "check windows crate version"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -32,7 +32,7 @@ jobs:
     # disable this job
     if: false
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     name: "check reproducible build"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

@@ -56,7 +56,7 @@ jobs:
     # N.B. This name should not change, it is used for downstream checks.
     name: release-gate
     if: ${{ inputs.tag != 'dry-run' }}
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     # This environment requires a 2-factor approval, i.e., the workflow must be approved by another
     # team member. GitHub fires approval events on every job that deploys to an environment, so we
     # have a dedicated environment for this purpose instead of using the `release` environment.
@@ -70,7 +70,7 @@ jobs:
 
   # Run 'dist plan' (or host) to determine what tasks we need to do
   plan:
-    runs-on: "depot-ubuntu-latest-4"
+    runs-on: "incredibuild-runner"
     outputs:
       val: ${{ steps.plan.outputs.manifest }}
       tag: ${{ (inputs.tag != 'dry-run' && inputs.tag) || '' }}
@@ -141,7 +141,7 @@ jobs:
       - plan
       - custom-build-release-binaries
     if: ${{ needs.plan.outputs.publishing == 'true' || fromJson(needs.plan.outputs.val).ci.github.pr_run_mode == 'upload' || inputs.tag == 'dry-run' }}
-    runs-on: "depot-ubuntu-latest-4"
+    runs-on: "incredibuild-runner"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
@@ -181,7 +181,7 @@ jobs:
       - custom-build-release-binaries
       - custom-build-docker
       - synthesize-local-dist-manifest
-    runs-on: "depot-ubuntu-latest-4"
+    runs-on: "incredibuild-runner"
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       BUILD_MANIFEST_NAME: target/distrib/global-dist-manifest.json
@@ -233,7 +233,7 @@ jobs:
     if: ${{ always() && needs.plan.result == 'success' && needs.plan.outputs.publishing == 'true' && (needs.build-global-artifacts.result == 'skipped' || needs.build-global-artifacts.result == 'success') && (needs.custom-build-release-binaries.result == 'skipped' || needs.custom-build-release-binaries.result == 'success') && (needs.custom-build-docker.result == 'skipped' || needs.custom-build-docker.result == 'success') }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    runs-on: "depot-ubuntu-latest-4"
+    runs-on: "incredibuild-runner"
     outputs:
       val: ${{ steps.host.outputs.manifest }}
     steps:
@@ -314,7 +314,7 @@ jobs:
     # `custom-publish-crates` is intentionally not gated on its result: it's
     # not critical to the release and isn't idempotent on retry.
     if: ${{ always() && needs.host.result == 'success' && needs.release-gate.result == 'success' && (needs.custom-publish-pypi.result == 'skipped' || needs.custom-publish-pypi.result == 'success') }}
-    runs-on: "depot-ubuntu-latest-4"
+    runs-on: "incredibuild-runner"
     environment:
       name: release
     permissions:

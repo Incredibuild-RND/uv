@@ -11,7 +11,7 @@ jobs:
   ecosystem-test:
     name: "${{ matrix.repo }}"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     strategy:
       matrix:
         include:

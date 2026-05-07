@@ -8,7 +8,7 @@ env:
 jobs:
   dist-plan:
     name: "dist plan"
-    runs-on: ubuntu-latest
+    runs-on: incredibuild-runner
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
