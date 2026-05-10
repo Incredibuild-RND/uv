@@ -5,6 +5,10 @@ on:
         required: false
         type: string
         default: "true"
+  # Allow manual dispatch on this fork so we can validate ib_console
+  # acceleration on cargo run benchmarks without needing main-branch
+  # pushes or rust file changes.
+  workflow_dispatch:
 
 permissions: {}
 
