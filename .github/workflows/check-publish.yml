@@ -22,4 +22,9 @@ jobs:
         with:
           save-if: ${{ github.ref == 'refs/heads/main' }}
       - name: "cargo publish dry-run"
-        run: ./scripts/cargo-ib.sh publish --workspace --dry-run
+        # Plain cargo here — ib_console crashes mid-run on this
+        # workspace-wide dry-run with the same exit-101 pattern we
+        # see on cargo nextest run; appears to be ib_console's limit
+        # for sustained workspace-scale compilation under
+        # --build-cache-force. Unwrapping until IB resolves.
+        run: cargo publish --workspace --dry-run
