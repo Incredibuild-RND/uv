@@ -129,6 +129,21 @@ jobs:
         with:
           tool: cargo-nextest
 
+      - name: "Build test binaries (accelerated via ib_console)"
+        # Split cargo nextest into two phases so ib_console accelerates
+        # the heavy COMPILE work (where cache reuse and distribution
+        # matter) without colliding with nextest's own subprocess
+        # forking during test execution. `--no-run` compiles all test
+        # binaries but doesn't run them. Raise FD limit because
+        # ib_console warns that 131072 may degrade performance.
+        run: |
+          ulimit -n 10000 || true
+          ./scripts/cargo-ib.sh nextest run --no-run \
+            --cargo-profile fast-build \
+            --features test-python-patch,native-auth,secret-service \
+            --workspace \
+            --profile ci-linux
+
       - name: "Cargo test"
         env:
           # Retry more than default to reduce flakes in CI
@@ -142,16 +157,15 @@ jobs:
           INSTA_UPDATE: new
           INSTA_PENDING_DIR: ${{ github.workspace }}/pending-snapshots
         run: |
-          # Note: not wrapping with cargo-ib.sh here. ib_console exited
-          # mid-compile under cargo nextest's process-management
-          # (truncated log right after `Incredibuild System: ib_server
-          # connected`). Run plain cargo nextest until the IB team
-          # confirms safe interop with nextest's test-runner forking.
+          # Plain cargo nextest here: test binaries are already compiled
+          # by the previous step, so this only executes them. ib_console
+          # is incompatible with nextest's runtime fork model.
           cargo nextest run \
             --cargo-profile fast-build \
             --features test-python-patch,native-auth,secret-service \
             --workspace \
-            --profile ci-linux
+            --profile ci-linux \
+            --no-fail-fast
 
       - name: "Upload pending snapshots"
         if: ${{ failure() }}
