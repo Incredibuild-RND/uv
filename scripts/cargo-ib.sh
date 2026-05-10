@@ -16,13 +16,22 @@
 
 set -euo pipefail
 
-# Pin cargo's output directory to the workspace `./target/`. Without
-# this, ib_console (or surrounding IB env) redirects cargo output to
-# /ib-workspace/cache/cargo-target/ and then `actions/upload-artifact`
-# steps that expect `./target/no-debug/uv` find nothing, breaking
-# every downstream test-ecosystem / test-system / test-smoke job that
-# downloads the linux-libc binary.
-export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$PWD/target}"
+# Expose IB's shared cargo target dir at the workspace's ./target/
+# location BEFORE running cargo, so when ib_console redirects cargo
+# output to /ib-workspace/cache/cargo-target/ the resulting binaries
+# are still findable at ./target/no-debug/uv etc. for
+# actions/upload-artifact and downstream consumers (test-ecosystem,
+# test-system, test-smoke, test-integration).
+#
+# We use a symlink instead of forcing CARGO_TARGET_DIR=$PWD/target
+# because ib_console crashes (exit 101 immediately after
+# "ib_server connected") when its expected target path is overridden
+# from the workspace.
+IB_TARGET="${IB_CARGO_TARGET_DIR:-/ib-workspace/cache/cargo-target}"
+if [ -d "$IB_TARGET" ] && [ ! -e "$PWD/target" ]; then
+    ln -s "$IB_TARGET" "$PWD/target"
+    echo "cargo-ib: $PWD/target -> $IB_TARGET"
+fi
 
 if [ -x /usr/bin/ib_console ]; then
     exec /usr/bin/ib_console \
