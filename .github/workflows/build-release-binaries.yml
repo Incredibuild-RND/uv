@@ -33,6 +33,16 @@ jobs:
   sdist:
     name: sdist
     runs-on: incredibuild-runner
+    env:
+      # Pin per-job CARGO_HOME / CARGO_TARGET_DIR. The maturin
+      # pep517 wheel build invokes cargo through pip, which on the
+      # IB runner shares /ib-workspace/cache/cargo/registry/ across
+      # concurrent jobs and occasionally produces NUL-byte
+      # corrupted .crate sources (manifests as "unclosed delimiter"
+      # parse errors mid-compile). Job-local CARGO_HOME costs a
+      # fresh cargo fetch but eliminates the race.
+      CARGO_HOME: ${{ github.workspace }}/.cargo
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
