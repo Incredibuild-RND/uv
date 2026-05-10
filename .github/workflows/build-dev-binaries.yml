@@ -32,7 +32,7 @@ jobs:
           save-if: ${{ inputs.save-rust-cache == 'true' }}
 
       - name: "Build"
-        run: cargo build --profile no-debug
+        run: ./scripts/cargo-ib.sh build --profile no-debug
 
       - name: "Upload binary"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -60,7 +60,7 @@ jobs:
           save-if: ${{ inputs.save-rust-cache == 'true' }}
 
       - name: "Build"
-        run: cargo build --profile no-debug
+        run: ./scripts/cargo-ib.sh build --profile no-debug
 
       - name: "Upload binary"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -99,7 +99,7 @@ jobs:
       - name: "Build"
         env:
           CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABIHF_LINKER: arm-linux-gnueabihf-gcc
-        run: cargo build --profile no-debug --target armv7-unknown-linux-gnueabihf --bin uv --bin uvx
+        run: ./scripts/cargo-ib.sh build --profile no-debug --target armv7-unknown-linux-gnueabihf --bin uv --bin uvx
 
       - name: "Upload binary"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -136,7 +136,7 @@ jobs:
           save-if: ${{ inputs.save-rust-cache == 'true' }}
 
       - name: "Build"
-        run: cargo build --profile no-debug --target x86_64-unknown-linux-musl --bin uv --bin uvx
+        run: ./scripts/cargo-ib.sh build --profile no-debug --target x86_64-unknown-linux-musl --bin uv --bin uvx
 
       - name: "Upload binary"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -296,13 +296,13 @@ jobs:
       - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
         with:
           save-if: ${{ inputs.save-rust-cache == 'true' }}
-      - run: cargo +${MSRV} build --profile no-debug --bin uv
+      - run: ./scripts/cargo-ib.sh +${MSRV} build --profile no-debug --bin uv
         env:
           MSRV: ${{ steps.msrv.outputs.value }}
       # Use `cargo run` instead of `./target/...` so the path resolves
       # via cargo metadata regardless of CARGO_TARGET_DIR overrides
       # (Incredibuild Hosted Build Runner sets a shared target dir).
-      - run: cargo +${MSRV} run --profile no-debug --bin uv -- --version
+      - run: ./scripts/cargo-ib.sh +${MSRV} run --profile no-debug --bin uv -- --version
         env:
           MSRV: ${{ steps.msrv.outputs.value }}
 
@@ -363,7 +363,7 @@ jobs:
           save-if: ${{ inputs.save-rust-cache == 'true' }}
 
       - name: "Build"
-        run: cargo build --profile no-debug --target aarch64-linux-android --bin uv --bin uvx
+        run: ./scripts/cargo-ib.sh build --profile no-debug --target aarch64-linux-android --bin uv --bin uvx
 
       - name: "Upload binary"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

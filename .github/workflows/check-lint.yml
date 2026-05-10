@@ -112,7 +112,7 @@ jobs:
       - name: "Install Rust toolchain"
         run: rustup component add clippy
       - name: "Clippy"
-        run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+        run: ./scripts/cargo-ib.sh clippy --workspace --all-targets --all-features --locked -- -D warnings
 
   clippy-windows:
     name: "clippy on windows"

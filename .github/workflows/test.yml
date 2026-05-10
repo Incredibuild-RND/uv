@@ -142,7 +142,7 @@ jobs:
           INSTA_UPDATE: new
           INSTA_PENDING_DIR: ${{ github.workspace }}/pending-snapshots
         run: |
-          cargo nextest run \
+          ./scripts/cargo-ib.sh nextest run \
             --cargo-profile fast-build \
             --features test-python-patch,native-auth,secret-service \
             --workspace \

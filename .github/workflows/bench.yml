@@ -43,9 +43,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libsasl2-dev libldap2-dev libkrb5-dev
-          cargo run --bin uv -- venv --cache-dir .cache
-          cargo run --bin uv -- pip compile test/requirements/jupyter.in --universal --exclude-newer 2024-08-08 --cache-dir .cache
-          cargo run --bin uv -- pip compile test/requirements/airflow.in --universal --exclude-newer 2024-08-08 --cache-dir .cache
+          ./scripts/cargo-ib.sh run --bin uv -- venv --cache-dir .cache
+          ./scripts/cargo-ib.sh run --bin uv -- pip compile test/requirements/jupyter.in --universal --exclude-newer 2024-08-08 --cache-dir .cache
+          ./scripts/cargo-ib.sh run --bin uv -- pip compile test/requirements/airflow.in --universal --exclude-newer 2024-08-08 --cache-dir .cache
 
       - name: "Build benchmarks"
         run: cargo codspeed build -m walltime --profile profiling -p uv-bench
@@ -121,9 +121,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libsasl2-dev libldap2-dev libkrb5-dev
-          cargo run --bin uv -- venv --cache-dir .cache
-          cargo run --bin uv -- pip compile test/requirements/jupyter.in --universal --exclude-newer 2024-08-08 --cache-dir .cache
-          cargo run --bin uv -- pip compile test/requirements/airflow.in --universal --exclude-newer 2024-08-08 --cache-dir .cache
+          ./scripts/cargo-ib.sh run --bin uv -- venv --cache-dir .cache
+          ./scripts/cargo-ib.sh run --bin uv -- pip compile test/requirements/jupyter.in --universal --exclude-newer 2024-08-08 --cache-dir .cache
+          ./scripts/cargo-ib.sh run --bin uv -- pip compile test/requirements/airflow.in --universal --exclude-newer 2024-08-08 --cache-dir .cache
 
       - name: "Build benchmarks"
         run: cargo codspeed build --profile profiling -p uv-bench
