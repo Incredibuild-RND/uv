@@ -14,7 +14,7 @@ permissions: {}
 
 jobs:
   publish-mirror:
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     environment:
       name: release
     env:

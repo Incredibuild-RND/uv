@@ -38,7 +38,7 @@ permissions: {}
 jobs:
   docker-plan:
     name: plan
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     timeout-minutes: 2
     outputs:
       login: ${{ steps.plan.outputs.login }}

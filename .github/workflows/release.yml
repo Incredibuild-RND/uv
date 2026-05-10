@@ -56,7 +56,7 @@ jobs:
     # N.B. This name should not change, it is used for downstream checks.
     name: release-gate
     if: ${{ inputs.tag != 'dry-run' }}
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     # This environment requires a 2-factor approval, i.e., the workflow must be approved by another
     # team member. GitHub fires approval events on every job that deploys to an environment, so we
     # have a dedicated environment for this purpose instead of using the `release` environment.

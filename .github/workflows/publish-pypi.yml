@@ -14,7 +14,7 @@ on:
 jobs:
   pypi-publish-uv:
     name: Upload uv to PyPI
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     environment:
       name: release
     permissions:
@@ -32,7 +32,7 @@ jobs:
 
   pypi-publish-uv-build:
     name: Upload uv-build to PyPI
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     environment:
       name: release
     permissions:

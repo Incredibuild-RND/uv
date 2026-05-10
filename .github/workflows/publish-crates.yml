@@ -14,7 +14,7 @@ on:
 jobs:
   crates-publish-uv:
     name: Upload uv to crates.io
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     environment:
       name: release
     permissions:

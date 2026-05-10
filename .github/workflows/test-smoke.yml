@@ -18,7 +18,7 @@ jobs:
   smoke-test-linux:
     name: "linux"
     timeout-minutes: 10
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -46,7 +46,7 @@ jobs:
   smoke-test-linux-aarch64:
     name: "linux aarch64"
     timeout-minutes: 10
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -74,7 +74,7 @@ jobs:
   smoke-test-linux-musl:
     name: "linux musl"
     timeout-minutes: 10
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container: alpine:latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

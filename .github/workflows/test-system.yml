@@ -12,7 +12,7 @@ jobs:
   system-test-debian:
     timeout-minutes: 10
     name: "python on debian"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container: debian:trixie-20260421@sha256:35b8ff74ead4880f22090b617372daff0ccae742eb5674455d542bef71ef1999
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -44,7 +44,7 @@ jobs:
   system-test-fedora:
     timeout-minutes: 10
     name: "python on fedora"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container: fedora:45@sha256:af8cdc432037f5e8e288bbc26c2b55b96000a911ec5b37959cd464d830f6cc5b
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -71,7 +71,7 @@ jobs:
   system-test-ubuntu:
     timeout-minutes: 10
     name: "python3.12 via setup-python"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -98,7 +98,7 @@ jobs:
   system-test-python-36:
     timeout-minutes: 10
     name: "python3.6 on debian buster"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container: python:3.6-buster
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -122,7 +122,7 @@ jobs:
   system-test-python-37:
     timeout-minutes: 10
     name: "python3.7 on debian buster"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container: python:3.7-buster
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -147,7 +147,7 @@ jobs:
   # system-test-opensuse:
   #   timeout-minutes: 5
   #   name: "python on opensuse"
-  #   runs-on: incredibuild-runner
+  #   runs-on: ubuntu-latest
   #   container: opensuse/tumbleweed
   #   steps:
   #     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -182,7 +182,7 @@ jobs:
   system-test-rocky-linux:
     timeout-minutes: 10
     name: "python on rocky linux ${{ matrix.rocky-version }}"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container: rockylinux/rockylinux:${{ matrix.rocky-version }}
     strategy:
       fail-fast: false
@@ -241,7 +241,7 @@ jobs:
   system-test-graalpy:
     timeout-minutes: 10
     name: "graalpy on linux"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -268,7 +268,7 @@ jobs:
   system-test-pypy:
     timeout-minutes: 10
     name: "pypy on linux"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -295,7 +295,7 @@ jobs:
   system-test-pyston:
     timeout-minutes: 10
     name: "pyston on linux"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container: pyston/pyston:2.3.5
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -319,7 +319,7 @@ jobs:
   system-test-chainguard-dev:
     timeout-minutes: 10
     name: "python on chainguard-dev"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container:
       image: cgr.dev/chainguard/python:latest-dev@sha256:c2ac4118658f7f5a07fcdf31dafb7adca7e7edaf3ad5121585b5f83b79bd85ed
       options: --user root --entrypoint /bin/sh
@@ -348,7 +348,7 @@ jobs:
   system-test-chainguard:
     timeout-minutes: 10
     name: "python on chainguard"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -373,7 +373,7 @@ jobs:
   system-test-alpine:
     timeout-minutes: 10
     name: "python on alpine"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container: alpine:latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -651,7 +651,7 @@ jobs:
   system-test-pyenv:
     timeout-minutes: 10
     name: "python3.9 via pyenv"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -693,7 +693,7 @@ jobs:
   system-test-linux-313:
     timeout-minutes: 10
     name: "python3.13 via setup-python"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -731,7 +731,7 @@ jobs:
           - {
               os: "linux",
               target: "linux-libc",
-              runner: "incredibuild-runner",
+              runner: "ubuntu-latest",
               arch: "x86-64",
             }
           - {
@@ -786,7 +786,7 @@ jobs:
   system-test-amazonlinux:
     timeout-minutes: 10
     name: "python on amazonlinux"
-    runs-on: incredibuild-runner
+    runs-on: ubuntu-latest
     container: amazonlinux:2023
     steps:
       - name: "Install base requirements"
