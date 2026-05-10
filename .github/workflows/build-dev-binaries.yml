@@ -19,6 +19,15 @@ jobs:
     name: "linux libc"
     timeout-minutes: 10
     runs-on: incredibuild-runner
+    env:
+      # Per-job CARGO_HOME / CARGO_TARGET_DIR. Without this the IB
+      # runner shares /ib-workspace/cache/cargo* across concurrent
+      # jobs and produces "found invalid metadata files" / "unclosed
+      # delimiter" corruption (rkyv_derive, indexmap, etc.). IB's
+      # ib_console build cache (separate from CARGO_TARGET_DIR) still
+      # accelerates compile across runs.
+      CARGO_HOME: ${{ github.workspace }}/.cargo
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -47,6 +56,15 @@ jobs:
     name: "linux aarch64"
     timeout-minutes: 10
     runs-on: incredibuild-runner
+    env:
+      # Per-job CARGO_HOME / CARGO_TARGET_DIR. Without this the IB
+      # runner shares /ib-workspace/cache/cargo* across concurrent
+      # jobs and produces "found invalid metadata files" / "unclosed
+      # delimiter" corruption (rkyv_derive, indexmap, etc.). IB's
+      # ib_console build cache (separate from CARGO_TARGET_DIR) still
+      # accelerates compile across runs.
+      CARGO_HOME: ${{ github.workspace }}/.cargo
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -75,6 +93,15 @@ jobs:
     name: "linux armv7 gnueabihf"
     timeout-minutes: 15
     runs-on: incredibuild-runner
+    env:
+      # Per-job CARGO_HOME / CARGO_TARGET_DIR. Without this the IB
+      # runner shares /ib-workspace/cache/cargo* across concurrent
+      # jobs and produces "found invalid metadata files" / "unclosed
+      # delimiter" corruption (rkyv_derive, indexmap, etc.). IB's
+      # ib_console build cache (separate from CARGO_TARGET_DIR) still
+      # accelerates compile across runs.
+      CARGO_HOME: ${{ github.workspace }}/.cargo
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -114,6 +141,15 @@ jobs:
     name: "linux musl"
     timeout-minutes: 10
     runs-on: incredibuild-runner
+    env:
+      # Per-job CARGO_HOME / CARGO_TARGET_DIR. Without this the IB
+      # runner shares /ib-workspace/cache/cargo* across concurrent
+      # jobs and produces "found invalid metadata files" / "unclosed
+      # delimiter" corruption (rkyv_derive, indexmap, etc.). IB's
+      # ib_console build cache (separate from CARGO_TARGET_DIR) still
+      # accelerates compile across runs.
+      CARGO_HOME: ${{ github.workspace }}/.cargo
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -310,6 +346,15 @@ jobs:
     name: "android aarch64"
     timeout-minutes: 15
     runs-on: incredibuild-runner
+    env:
+      # Per-job CARGO_HOME / CARGO_TARGET_DIR. Without this the IB
+      # runner shares /ib-workspace/cache/cargo* across concurrent
+      # jobs and produces "found invalid metadata files" / "unclosed
+      # delimiter" corruption (rkyv_derive, indexmap, etc.). IB's
+      # ib_console build cache (separate from CARGO_TARGET_DIR) still
+      # accelerates compile across runs.
+      CARGO_HOME: ${{ github.workspace }}/.cargo
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
