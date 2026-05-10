@@ -29,6 +29,7 @@ jobs:
       # stale-rlib linker errors here ("undefined symbol …which…").
       # Per-job target dir avoids the race; we sacrifice some cache
       # reuse for correctness on this fast-running job.
+      CARGO_HOME: ${{ github.workspace }}/.cargo
       CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

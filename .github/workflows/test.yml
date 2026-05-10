@@ -27,6 +27,14 @@ jobs:
   cargo-test-linux:
     timeout-minutes: 10
     runs-on: incredibuild-runner
+    env:
+      # Per-job CARGO_HOME / CARGO_TARGET_DIR. Without this the IB
+      # runner shares /ib-workspace/cache/cargo* across concurrent
+      # jobs, leading to NUL-byte source corruption (indexmap,
+      # rkyv_derive) under workspace-scale compilation. ib_console
+      # build cache (separate) still accelerates compile.
+      CARGO_HOME: ${{ github.workspace }}/.cargo
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
     name: "cargo test on linux"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
