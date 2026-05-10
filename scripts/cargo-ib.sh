@@ -16,6 +16,14 @@
 
 set -euo pipefail
 
+# Pin cargo's output directory to the workspace `./target/`. Without
+# this, ib_console (or surrounding IB env) redirects cargo output to
+# /ib-workspace/cache/cargo-target/ and then `actions/upload-artifact`
+# steps that expect `./target/no-debug/uv` find nothing, breaking
+# every downstream test-ecosystem / test-system / test-smoke job that
+# downloads the linux-libc binary.
+export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$PWD/target}"
+
 if [ -x /usr/bin/ib_console ]; then
     exec /usr/bin/ib_console \
         --standalone \

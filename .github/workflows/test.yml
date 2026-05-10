@@ -142,7 +142,12 @@ jobs:
           INSTA_UPDATE: new
           INSTA_PENDING_DIR: ${{ github.workspace }}/pending-snapshots
         run: |
-          ./scripts/cargo-ib.sh nextest run \
+          # Note: not wrapping with cargo-ib.sh here. ib_console exited
+          # mid-compile under cargo nextest's process-management
+          # (truncated log right after `Incredibuild System: ib_server
+          # connected`). Run plain cargo nextest until the IB team
+          # confirms safe interop with nextest's test-runner forking.
+          cargo nextest run \
             --cargo-profile fast-build \
             --features test-python-patch,native-auth,secret-service \
             --workspace \
